@@ -1,0 +1,2 @@
+"STRINGIFY( \n\
+abc)"
