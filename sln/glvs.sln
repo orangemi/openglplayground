@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glutsample", "glutsample\glutsample.vcxproj", "{51E1729A-8A27-4129-9B3A-A531601B048C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsample", "libsample\libsample.vcxproj", "{17AB738D-50E9-4D64-8B5A-89024085FB05}"
