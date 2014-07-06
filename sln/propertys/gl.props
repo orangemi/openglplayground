@@ -1,16 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <IncludePath>$(SolutionDir)\..\thirdparty\glext\include;$(SolutionDir)\..\thirdparty\glfw-3.0.4\include;$(SolutionDir)\..\thirdparty\glut-3.7.6\include;$(SolutionDir)\..\thirdparty\glew-1.10.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\thirdparty\glext\lib;$(SolutionDir)\..\thirdparty\glfw-3.0.4\lib;$(SolutionDir)\..\thirdparty\glut-3.7.6\lib;$(SolutionDir)\..\thirdparty\glew-1.10.0\lib;$(LibraryPath)</LibraryPath>
-    <ExecutablePath>$(SolutionDir)\..\thirdparty\glut-3.7.6\bin;$(ExecutablePath)</ExecutablePath>
-  </PropertyGroup>
-  <ItemDefinitionGroup>
-    <Link>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glext.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemGroup />
+	<ImportGroup Label="PropertySheets" />
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup>
+		<IncludePath>$(SolutionDir)\..\thirdparty\glext\include;$(SolutionDir)\..\thirdparty\glfw-3.0.4\include;$(SolutionDir)\..\thirdparty\glut-3.7.6\include;$(SolutionDir)\..\thirdparty\glew-1.10.0\include;$(SolutionDir)\..\thirdparty\jpeg-9a\include;$(SolutionDir)\..\thirdparty\zlib-1.2.8\include;$(SolutionDir)\..\thirdparty\png-1.6.12\include;$(IncludePath)
+		</IncludePath>
+		<LibraryPath>$(SolutionDir)\..\thirdparty\glext\lib;$(SolutionDir)\..\thirdparty\glfw-3.0.4\lib;$(SolutionDir)\..\thirdparty\glut-3.7.6\lib;$(SolutionDir)\..\thirdparty\glew-1.10.0\lib;$(SolutionDir)\..\thirdparty\jpeg-9a\lib;$(SolutionDir)\..\thirdparty\zlib-1.2.8\lib;$(SolutionDir)\..\thirdparty\png-1.6.12\lib;$(LibraryPath)
+		</LibraryPath>
+		<ExecutablePath>$(SolutionDir)\..\thirdparty\glut-3.7.6\bin;$(ExecutablePath)
+		</ExecutablePath>
+	</PropertyGroup>
+	<ItemDefinitionGroup>
+		<Link>
+			<AdditionalDependencies>
+				opengl32.lib;
+				glu32.lib;
+				glext.lib;
+				glfw3.lib;
+				libpng16.lib;
+				zlib.lib;
+				jpeg.lib;
+				%(AdditionalDependencies)
+			</AdditionalDependencies>
+		</Link>
+		<PostBuildEvent>
+			<Command>
+				xcopy /Y "$(SolutionDir)\..\thirdparty\glut-3.7.6\bin\*" "$(OutDir)"
+				xcopy /Y "$(SolutionDir)\..\thirdparty\glfw-3.0.4\bin\*" "$(OutDir)"
+				xcopy /Y "$(SolutionDir)\..\thirdparty\glext\bin\*" "$(OutDir)"
+			</Command>
+			<Message>
+				xcopy /Y "$(SolutionDir)\..\thirdparty\glut-3.7.6\bin\*" "$(OutDir)"
+				xcopy /Y "$(SolutionDir)\..\thirdparty\glfw-3.0.4\bin\*" "$(OutDir)"
+				xcopy /Y "$(SolutionDir)\..\thirdparty\glext\bin\*" "$(OutDir)"
+			</Message>
+		</PostBuildEvent>	</ItemDefinitionGroup>
+	<ItemGroup />
 </Project>

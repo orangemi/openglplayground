@@ -63,12 +63,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /Y "$(SolutionDir)\..\thirdparty\glut-3.7.6\bin\*" "$(OutDir)"</Command>
-      <Message>xcopy /Y "$(SolutionDir)\..\thirdparty\glut-3.7.6\bin\*" "$(OutDir)"</Message>
-      <Command>xcopy /Y "$(SolutionDir)\..\thirdparty\glfw-3.0.4\bin\*" "$(OutDir)"</Command>
-      <Message>xcopy /Y "$(SolutionDir)\..\thirdparty\glfw-3.0.4\bin\*" "$(OutDir)"</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

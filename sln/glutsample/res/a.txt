@@ -1,2 +1,0 @@
-"STRINGIFY( \n\
-abc)"
