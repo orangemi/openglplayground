@@ -1,3 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src/main.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App1.cpp">
+      <Filter>app1</Filter>
+    </ClCompile>
+    <ClCompile Include="src\File.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Application.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App1.h">
+      <Filter>app1</Filter>
+    </ClInclude>
+    <ClInclude Include="src\File.h">
+      <Filter>base</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\glsl\sample.v.glsl">
+      <Filter>res\glsl</Filter>
+    </None>
+    <None Include="res\glsl\sample.f.glsl">
+      <Filter>res\glsl</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{6876c8b9-3ef7-4847-b1ff-657b74770878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app1">
+      <UniqueIdentifier>{b7750f54-7e1d-460e-8d06-2f63e32ae397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{ab61bd82-67e7-4cd5-9c8d-48ba53e0b724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\glsl">
+      <UniqueIdentifier>{caef469a-836c-4251-a668-b862a7cfdb05}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
 </Project>

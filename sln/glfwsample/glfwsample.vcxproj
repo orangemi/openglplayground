@@ -86,6 +86,7 @@
     <ClCompile Include="src/main.cpp" />
     <ClCompile Include="src\App1.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\File.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libsample\libsample.vcxproj">
@@ -95,6 +96,7 @@
   <ItemGroup>
     <ClInclude Include="src\App1.h" />
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\File.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\sample.f.glsl" />
