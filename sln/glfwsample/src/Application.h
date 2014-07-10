@@ -11,6 +11,8 @@
 #include <gl/glext.h>
 #include <png.h>
 
+#include "File.h"
+
 class Application {
 public:
 	static Application* _currentApp;
@@ -19,7 +21,6 @@ public:
 	virtual int start();
 	virtual void startup();
 	virtual void render(double time);
-//	virtual void pollingEvent();
 	static void onErrorCallback(int error, const char* desc);
 	static void onKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	bool isRunning();

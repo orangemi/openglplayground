@@ -50,9 +50,13 @@ int Application::start() {
 }
 
 bool Application::loadVertexSharderSource(char * shaderName, GLuint * shader) {
-	FILE * fp;
-	
-	fclose(fp);
+	//FILE * fp;
+	//std::string path;
+	//path = "res/" + std::string(shaderName);
+	//char * data;
+	//fopen()
+
+	//fclose(fp);
 	GLchar ** source;
 	GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
