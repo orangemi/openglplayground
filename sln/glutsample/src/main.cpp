@@ -1,115 +1,148 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <png.h>
 #include <iostream>
 
-#include <GL/glew.h>
+#ifdef _WIN32
 #include <GL/glut.h>
-#include <png.h>
+#else
+#include <GLUT/glut.h>
+#endif
 
 
-GLubyte *textureImage;
+//GLubyte *textureImage;
+float rotateX = 0;
+float rotateY = 0;
 
-void changeSize(int w, int h) {
+int mouseX;
+int mouseY;
 
-	// Prevent a divide by zero, when window is too short
-	// (you cant make a window of zero width).
-	if (h == 0)
-		h = 1;
-
-	float ratio =  w * 1.0 / h;
-
-	// Use the Projection Matrix
-	glMatrixMode(GL_PROJECTION);
-
-	// Reset Matrix
-	glLoadIdentity();
-
-	// Set the viewport to be the entire window
-	glViewport(0, 0, w, h);
-
-	// Set the correct perspective.
-	gluPerspective(45.0f, ratio, 0.1f, 100.0f);
-
-	// Get Back to the Modelview
-	glMatrixMode(GL_MODELVIEW);
-}
-
-float angle = 0.0f;
-
-void renderScene(void) {
-
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, 0.0);
-		glTexCoord2f(0.0, 1.0);	glVertex3f(-1.0,  1.0, 0.0);
-		glTexCoord2f(1.0, 1.0);	glVertex3f( 1.0,  1.0, 0.0);
-		glTexCoord2f(1.0, 0.0);	glVertex3f( 1.0, -1.0, 0.0);
-	glEnd();
-
-	glutSwapBuffers();
-}
-
-
-
-bool loadPngImage(const char* name, int &outWitdh, int &outHeight, bool &outHasAlpha, GLubyte **outData) {
+bool loadPngImage(char *name, int &outWidth, int &outHeight, bool &outHasAlpha, GLubyte **outData) {
 	png_structp png_ptr;
 	png_infop info_ptr;
-	unsigned int read = 0;
+	unsigned int sig_read = 0;
 	int color_type, interlace_type;
 	FILE *fp;
 
-	if ((fp = fopen(name, "rb")) == NULL) {
-		std::cout << "fopen" << std::endl;
+	if ((fp = fopen(name, "rb")) == NULL)
 		return false;
-	}
 
-	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	/* Create and initialize the png_struct
+	* with the desired error handler
+	* functions.  If you want to use the
+	* default stderr and longjump method,
+	* you can supply NULL for the last
+	* three parameters.  We also supply the
+	* the compiler header file version, so
+	* that we know if the application
+	* was compiled with a compatible version
+	* of the library.  REQUIRED
+	*/
+	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
+		NULL, NULL, NULL);
+
 	if (png_ptr == NULL) {
-		std::cout << "png_ptr" << std::endl;
 		fclose(fp);
 		return false;
 	}
 
+	/* Allocate/initialize the memory
+	* for image information.  REQUIRED. */
 	info_ptr = png_create_info_struct(png_ptr);
-	if (!info_ptr) {
-		std::cout << "info_ptr" << std::endl;
+	if (info_ptr == NULL) {
 		fclose(fp);
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
 		return false;
 	}
 
+	/* Set error handling if you are
+	* using the setjmp/longjmp method
+	* (this is the normal method of
+	* doing things with libpng).
+	* REQUIRED unless you  set up
+	* your own error handlers in
+	* the png_create_read_struct()
+	* earlier.
+	*/
 	if (setjmp(png_jmpbuf(png_ptr))) {
-		std::cout << "setjmp" << std::endl;
-		fclose(fp);
+		/* Free all of the memory associated
+		* with the png_ptr and info_ptr */
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+		fclose(fp);
+		/* If we get here, we had a
+		* problem reading the file */
 		return false;
 	}
 
+	/* Set up the output control if
+	* you are using standard C streams */
 	png_init_io(png_ptr, fp);
-	png_set_sig_bytes(png_ptr, read);
+
+	/* If we have already
+	* read some of the signature */
+	png_set_sig_bytes(png_ptr, sig_read);
+
+	/*
+	* If you have enough memory to read
+	* in the entire image at once, and
+	* you need to specify only
+	* transforms that can be controlled
+	* with one of the PNG_TRANSFORM_*
+	* bits (this presently excludes
+	* dithering, filling, setting
+	* background, and doing gamma
+	* adjustment), then you can read the
+	* entire image (including pixels)
+	* into the info structure with this
+	* call
+	*
+	* PNG_TRANSFORM_STRIP_16 |
+	* PNG_TRANSFORM_PACKING  forces 8 bit
+	* PNG_TRANSFORM_EXPAND forces to
+	*  expand a palette into RGB
+	*/
 	png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, NULL);
+
 	png_uint_32 width, height;
 	int bit_depth;
-	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
-	outWitdh = width;
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
+		&interlace_type, NULL, NULL);
+	outWidth = width;
 	outHeight = height;
 
+	//Getting number of channels from the image
+	png_byte channels = png_get_channels(png_ptr, info_ptr);
+
+	if (channels == 4)
+		outHasAlpha = true;
+	else
+		outHasAlpha = false;
+
 	unsigned int row_bytes = png_get_rowbytes(png_ptr, info_ptr);
-	*outData = (unsigned char*) malloc(row_bytes *outHeight);
+	*outData = (unsigned char*)malloc(row_bytes * outHeight);
+
 	png_bytepp row_pointers = png_get_rows(png_ptr, info_ptr);
 
 	for (int i = 0; i < outHeight; i++) {
+		// note that png is ordered top to
+		// bottom, but OpenGL expect it bottom to top
+		// so the order or swapped
 		memcpy(*outData + (row_bytes * (outHeight - 1 - i)), row_pointers[i], row_bytes);
 	}
 
+	/* Clean up after the read,
+	* and free any memory allocated */
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
+	/* Close the file */
+	fclose(fp);
+
+	/* That's it */
 	return true;
 }
 
-void init() {
+void init(void) {
+	GLubyte *textureImage;
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
@@ -117,47 +150,83 @@ void init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	char* filename = "logo.png";
 	int width, height;
 	bool hasAlpha;
+	char filename[] = "logo.png";
 	bool success = loadPngImage(filename, width, height, hasAlpha, &textureImage);
 	if (!success) {
-		std::cout << "Unable to load " << filename << std::endl;
+		std::cout << "Unable to load png file" << std::endl;
 		return;
 	}
-
-	hasAlpha = false;
 	std::cout << "Image loaded " << width << " " << height << " alpha " << hasAlpha << std::endl;
-
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, hasAlpha ? GL_RGBA8 : GL_RGB8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width,
+		height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+		textureImage);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_FLAT);
-
 }
 
-int main(int argc, char **argv) {
+void display(void) {
+	glLoadIdentity();
+	glTranslatef(0.0, 0.0, -3.6);
+	glRotatef(rotateX, 0, 1, 0);
+	glRotatef(rotateY, 1, 0, 0);
 
-	// init GLUT and create window
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-2.0, -1.0, 0.0);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-2.0, 1.0, 0.0);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(0.0, 1.0, 0.0);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(0.0, -1.0, 0.0);
+
+	glEnd();
+
+	glFlush();
+	glutSwapBuffers();
+}
+
+void myReshape(int w, int h) {
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0, 1.0 * (GLfloat)w / (GLfloat)h, 1.0, 30.0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void mousePassive(int x, int y){
+	mouseX = x;
+	mouseY = y;
+}
+
+void mouseMotion(int x, int y){
+	const float SPEED = 2;
+
+	rotateX += (mouseX - x) / SPEED;
+	rotateY += (mouseY - y) / SPEED;
+	mousePassive(x, y);
+	glutPostRedisplay();
+}
+
+int
+main(int argc, char** argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(100,100);
-	glutInitWindowSize(320,320);
-	glutCreateWindow("Lighthouse3D- GLUT Tutorial");
-
+	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
+	glutCreateWindow("PNG texture");
+	glutMotionFunc(mouseMotion);
+	glutPassiveMotionFunc(mousePassive);
 	init();
-
-	// register callbacks
-	glutDisplayFunc(renderScene);
-//	glutReshapeFunc(changeSize);
-	glutIdleFunc(renderScene);
-
-	// enter GLUT event processing cycle
+	glutReshapeFunc(myReshape);
+	glutDisplayFunc(display);
+	std::cout << "Use mouse drag to rotate." << std::endl;
 	glutMainLoop();
-
 	return 0;
 }

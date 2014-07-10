@@ -1,10 +1,15 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <gl/glext.h>
 #include <iostream>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include <math.h>
+
+#include <GLFW/glfw3.h>
+#include <gl/glext.h>
+#include <png.h>
 
 class Application {
 public:
@@ -19,13 +24,16 @@ public:
 	static void onKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	bool isRunning();
 
-private:
+protected:
+	bool loadVertexSharderSource(char * shaderName, GLuint * shader);
+	bool loadFragSharderSource(char * shaderName, GLuint * shader);
+
+protected:
 
 	bool _isRunning;
 	char* _name;
 	GLFWwindow* window;
 
-	GLuint rendering_program;
-	GLuint vertex_array_object;
+	
 };
 
