@@ -26,10 +26,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\glsl\sample.v.glsl">
+    <None Include="res\glsl\app1.vert">
       <Filter>res\glsl</Filter>
     </None>
-    <None Include="res\glsl\sample.f.glsl">
+    <None Include="res\glsl\app1.frag">
       <Filter>res\glsl</Filter>
     </None>
   </ItemGroup>

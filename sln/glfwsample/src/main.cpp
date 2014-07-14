@@ -8,6 +8,7 @@
 
 int main(int argc, char** argv) {
 	//Application app;
+
 	AppDeletgate app;
 	app.start();
 }

@@ -3,7 +3,7 @@
 	<ImportGroup Label="PropertySheets" />
 	<PropertyGroup Label="UserMacros" />
 	<PropertyGroup>
-		<IncludePath>$(SolutionDir)\..\thirdparty\glext\include;$(SolutionDir)\..\thirdparty\glfw-3.0.4\include;$(SolutionDir)\..\thirdparty\glut-3.7.6\include;$(SolutionDir)\..\thirdparty\glew-1.10.0\include;$(SolutionDir)\..\thirdparty\jpeg-9a\include;$(SolutionDir)\..\thirdparty\zlib-1.2.8\include;$(SolutionDir)\..\thirdparty\png-1.6.12\include;$(IncludePath)
+		<IncludePath>$(SolutionDir)\..\thirdparty\glext\include;$(SolutionDir)\..\thirdparty\glm-0.9.5.4;$(SolutionDir)\..\thirdparty\glext\include;$(SolutionDir)\..\thirdparty\glfw-3.0.4\include;$(SolutionDir)\..\thirdparty\glut-3.7.6\include;$(SolutionDir)\..\thirdparty\glew-1.10.0\include;$(SolutionDir)\..\thirdparty\jpeg-9a\include;$(SolutionDir)\..\thirdparty\zlib-1.2.8\include;$(SolutionDir)\..\thirdparty\png-1.6.12\include;$(IncludePath)
 		</IncludePath>
 		<LibraryPath>$(SolutionDir)\..\thirdparty\glext\lib;$(SolutionDir)\..\thirdparty\glfw-3.0.4\lib;$(SolutionDir)\..\thirdparty\glut-3.7.6\lib;$(SolutionDir)\..\thirdparty\glew-1.10.0\lib;$(SolutionDir)\..\thirdparty\jpeg-9a\lib;$(SolutionDir)\..\thirdparty\zlib-1.2.8\lib;$(SolutionDir)\..\thirdparty\png-1.6.12\lib;$(LibraryPath)
 		</LibraryPath>

@@ -25,6 +25,14 @@ void Application::onKeyCallback(GLFWwindow* window, int key, int scancode, int a
 	}
 }
 
+void Application::startup() {
+
+}
+
+void Application::render(double time) {
+
+}
+
 int Application::start() {
 	Application::_currentApp = this;
 	glfwSetErrorCallback(onErrorCallback);
@@ -49,17 +57,52 @@ int Application::start() {
 	return 0;
 }
 
-bool Application::loadVertexSharderSource(char * shaderName, GLuint * shader) {
-	//FILE * fp;
-	//std::string path;
-	//path = "res/" + std::string(shaderName);
-	//char * data;
-	//fopen()
+bool Application::loadVertexSharderSource(const std::string shaderName, GLuint &shader) {
+	std::string source;
+	File::readChar(shaderName, source);
+	const GLchar * data[] = { source.c_str() };
+	shader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(shader, 1, data, NULL);
+	glCompileShader(shader);
+	return true;
+}
 
-	//fclose(fp);
-	GLchar ** source;
-	GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+bool Application::loadFragSharderSource(const std::string shaderName, GLuint &shader) {
+	std::string source;
+	File::readChar(shaderName, source);
+	const GLchar * data[] = { source.c_str() };
+	shader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(shader, 1, data, NULL);
+	glCompileShader(shader);
+	return true;
+}
 
-	glShaderSource(vertex_shader, 1, source, NULL);
-	glCompileShader(vertex_shader);
+bool Application::compileShader(GLuint vertexShader, GLuint fragShader, GLuint &program) {
+	GLint compileStatus;
+	char logMsg[1024];
+
+	glCompileShader(vertexShader);
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileStatus);
+	if (compileStatus == GL_FALSE) {
+		glGetShaderInfoLog(vertexShader, 1024, NULL, logMsg);
+		std::cout << "Fail to compile with the following error: " << logMsg << std::endl;
+	}
+
+	glCompileShader(fragShader);
+
+	glGetShaderiv(fragShader, GL_COMPILE_STATUS, &compileStatus);
+	if (compileStatus == GL_FALSE) {
+		glGetShaderInfoLog(fragShader, 1024, NULL, logMsg);
+		std::cout << "Fail to compile with the following error: " << logMsg << std::endl;
+	}
+
+	program = glCreateProgram();
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragShader);
+	glLinkProgram(program);
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragShader);
+
+	return true;
 }

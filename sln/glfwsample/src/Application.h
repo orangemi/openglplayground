@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include <gl/glext.h>
 #include <png.h>
+#include <glm/glm.hpp>
 
 #include "File.h"
 
@@ -26,15 +27,14 @@ public:
 	bool isRunning();
 
 protected:
-	bool loadVertexSharderSource(char * shaderName, GLuint * shader);
-	bool loadFragSharderSource(char * shaderName, GLuint * shader);
+	bool loadVertexSharderSource(const std::string shaderName, GLuint &shader);
+	bool loadFragSharderSource(const std::string shaderName, GLuint &shader);
+	bool compileShader(GLuint vertexShader, GLuint fragShader, GLuint &program);
 
 protected:
-
 	bool _isRunning;
 	char* _name;
 	GLFWwindow* window;
 
-	
 };
 
