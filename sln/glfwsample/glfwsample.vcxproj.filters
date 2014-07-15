@@ -7,22 +7,22 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="src\App1.cpp">
-      <Filter>app1</Filter>
-    </ClCompile>
     <ClCompile Include="src\File.cpp">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App2.cpp">
+      <Filter>app2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="src\App1.h">
-      <Filter>app1</Filter>
-    </ClInclude>
     <ClInclude Include="src\File.h">
       <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App2.h">
+      <Filter>app2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +45,9 @@
     </Filter>
     <Filter Include="res\glsl">
       <UniqueIdentifier>{caef469a-836c-4251-a668-b862a7cfdb05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app2">
+      <UniqueIdentifier>{77f12991-e7fd-47bf-91de-a4069846df4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

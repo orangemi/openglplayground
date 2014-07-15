@@ -84,7 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src/main.cpp" />
-    <ClCompile Include="src\App1.cpp" />
+    <ClCompile Include="src\App2.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\File.cpp" />
   </ItemGroup>
@@ -94,7 +94,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\App1.h" />
+    <ClInclude Include="src\App2.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\File.h" />
   </ItemGroup>

@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "Application.h"
-#include "App1.h"
+#include "App2.h"
 
 int main(int argc, char** argv) {
 	//Application app;

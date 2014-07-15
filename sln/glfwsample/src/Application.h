@@ -30,6 +30,8 @@ protected:
 	bool loadVertexSharderSource(const std::string shaderName, GLuint &shader);
 	bool loadFragSharderSource(const std::string shaderName, GLuint &shader);
 	bool compileShader(GLuint vertexShader, GLuint fragShader, GLuint &program);
+	bool loadPngImg(const std::string filename, int &outWidth, int &outHeight, bool &outHasAlpha, GLubyte **outData);
+	bool loadImgTexture(int width, int height, bool hasAlpha, GLubyte *imgData, GLuint &texture);
 
 protected:
 	bool _isRunning;
