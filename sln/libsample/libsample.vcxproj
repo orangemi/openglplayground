@@ -80,10 +80,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src/Human.cpp" />
+    <ClCompile Include="$(SolutionDir)\..\src\Application.cpp" />
+    <ClCompile Include="$(SolutionDir)\..\src\File.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src/Human.h" />
+    <ClInclude Include="$(SolutionDir)\..\src\Application.h" />
+    <ClInclude Include="$(SolutionDir)\..\src\File.h" />
+    <ClInclude Include="..\..\src\include.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

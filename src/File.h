@@ -1,9 +1,6 @@
-#pragma once
-
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <string>
+#ifndef FILE_H_
+#define FILE_H_
+#include "include.h"
 
 class File {
 public:
@@ -16,3 +13,4 @@ public:
 	static bool readChar(const std::string filename, std::string &data);
 };
 
+#endif // FILE_H_
