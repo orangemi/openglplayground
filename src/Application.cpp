@@ -5,6 +5,7 @@ Application* Application::_currentApp = nullptr;
 Application::Application() {
 	_isRunning = false;
 	_name = "Sample";
+	_isShowFPS = false;
 }
 
 Application::~Application() {
@@ -14,15 +15,25 @@ bool Application::isRunning() {
 	return _isRunning;
 }
 
-void Application::onErrorCallback(int error, const char* desc) {
+void Application::onErrorCallback(int error, const char * desc) {
 	_currentApp->_isRunning = false;
+	std::cout << "GLFW Error: " << desc << std::endl;
 }
 
-void Application::onKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void Application::onKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods) {
+	std::cout << "input key: " << key << " , scancode: " << scancode << " , action: " << action << " , mods: " << mods << std::endl;
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 		_currentApp->_isRunning = false;
 	}
+}
+
+void Application::onMouseCallback(GLFWwindow * window, int button, int action, int mods) {
+	std::cout << "mouse button: " << button << " , action: " << action << " , mods: " << mods << std::endl;
+}
+
+void Application::onMouseScrollCallback(GLFWwindow * window, double x, double y) {
+	std::cout << "mouse wheel x: " << x << " , y: " << y << std::endl;
 }
 
 void Application::startup() {
@@ -46,20 +57,40 @@ void Application::start() {
 		glfwTerminate();
 		return;
 	}
+
 	glfwMakeContextCurrent(_window);
 	glfwSetKeyCallback(_window, onKeyCallback);
+	glfwSetMouseButtonCallback(_window, onMouseCallback);
+	glfwSetScrollCallback(_window, onMouseScrollCallback);
+
+	//init fps;
+	_lastRenderTime = 0.0;
+	_fpsCount = 0;
 
 	startup();
 
 	_isRunning = true;
 	do {
 		render(glfwGetTime());
+		showFPS();
+
 		glfwSwapBuffers(_window);
 		glfwPollEvents();
 	} while (_isRunning && !glfwWindowShouldClose(_window));
 
 	end();
 	glfwTerminate();
+}
+
+void Application::showFPS() {
+	if (!_isShowFPS) return;
+	_fpsCount++;
+	if (glfwGetTime() - _lastRenderTime > 1.0) {
+		double fps = _fpsCount / (glfwGetTime() - _lastRenderTime);
+		std::cout << "fps: " << fps << std::endl;
+		_lastRenderTime = glfwGetTime();
+		_fpsCount = 0;
+	}
 }
 
 bool Application::loadVertexSharderSource(const std::string shaderName, GLuint &shader) {
