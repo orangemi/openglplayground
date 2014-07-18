@@ -8,20 +8,16 @@ File::~File() {
 
 bool File::readChar(const std::string filename, std::string &data) {
 
-	char buffer[FILENAME_MAX];
-	GetModuleFileName(NULL, buffer, FILENAME_MAX);
-	char *p = strrchr(buffer, '//');
-	*p = '\0';
-	std::string dir = std::string(buffer);
-	//GetCurrentDir(buffer, FILENAME_MAX);
-	//std::string dir = std::string(buffer);
-std::cout << dir << std::endl << std::endl;
-
-
 	std::ifstream file;
-	file.open(dir + "/" + filename);
 
-std::cout << "load file: " + dir + "/" + filename << std::endl;
+	char buffer[FILENAME_MAX];
+	GetModuleFileNameA(NULL, buffer, FILENAME_MAX);
+	char *p = strrchr(buffer, '\\');
+	if (p) *p = '\0';
+	std::string dir = std::string(buffer);
+	file.open(dir + "/" + filename);
+	std::cout << "load file: " + dir + "/" + filename << std::endl;
+//	file.open(filename);
 
 	if (!file.is_open()) return false;
 

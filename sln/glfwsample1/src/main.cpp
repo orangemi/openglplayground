@@ -4,6 +4,6 @@
 int main(int argc, char** argv) {
 	//Application app;
 
-	AppDeletgate app;
+	AppDelegate app;
 	app.start();
 }

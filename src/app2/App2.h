@@ -3,12 +3,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-class AppDeletgate : public Application {
+class AppDelegate : public Application {
 public:
-	AppDeletgate();
-	~AppDeletgate();
+	AppDelegate();
+	~AppDelegate();
 	void startup();
 	void render(double time);
+	void end();
 
 private:
 	GLuint program;

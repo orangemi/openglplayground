@@ -7,8 +7,9 @@ public:
 	static Application* _currentApp;
 	Application(void);
 	~Application(void);
-	virtual int start();
+	virtual void start();
 	virtual void startup();
+	virtual void end();
 	virtual void render(double time);
 	static void onErrorCallback(int error, const char* desc);
 	static void onKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -24,7 +25,7 @@ protected:
 protected:
 	bool _isRunning;
 	char* _name;
-	GLFWwindow* window;
+	GLFWwindow* _window;
 
 };
 

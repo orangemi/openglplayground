@@ -1,14 +1,14 @@
 #include "App1.h"
 
-AppDeletgate::AppDeletgate() {
+AppDelegate::AppDelegate() {
 }
 
-AppDeletgate::~AppDeletgate() {
+AppDelegate::~AppDelegate() {
 }
 
 ////////////////////////////////////////////////////////////////////////////
 
-void AppDeletgate::startup() {
+void AppDelegate::startup() {
 	GLuint vertexShader;
 	GLuint fragShader;
 	loadVertexSharderSource("res/glsl/app1.vert", vertexShader);
@@ -26,7 +26,7 @@ void AppDeletgate::startup() {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 }
 
-void AppDeletgate::render(double time) {
+void AppDelegate::render(double time) {
 
 	glm::mat4 projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
 	glm::mat4 viewMatrix = glm::lookAt(glm::vec3(4.0f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));

@@ -25,7 +25,9 @@
         xcopy /Y "$(SolutionDir)\..\thirdparty\glut-3.7.6\bin\*" "$(OutDir)"
         xcopy /Y "$(SolutionDir)\..\thirdparty\glfw-3.0.4\bin\*" "$(OutDir)"
         xcopy /Y "$(SolutionDir)\..\thirdparty\glext\bin\*" "$(OutDir)"
-        xcopy /Y "$(SolutionDir)\..\res\*" "$(OutDir)\res"
+        rd /s/q "$(OutDir)\res"
+        mkdir "$(OutDir)\res"
+        xcopy /Y/E "$(SolutionDir)\..\res" "$(OutDir)\res"
       </Command>
       <Message>
         xcopy /Y "$(SolutionDir)\..\thirdparty\glut-3.7.6\bin\*" "$(OutDir)"
