@@ -26,6 +26,10 @@
 #include <gl/glext.h>
 #include <png.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+#include <ft2build.h>
+#include <freetype.h>
 
 //User file include
 #include "File.h"

@@ -1,4 +1,4 @@
-#include "App2.h"
+#include "App3.h"
 
 AppDelegate::AppDelegate() {
 	_isShowFPS = true;
