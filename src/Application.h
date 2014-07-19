@@ -4,18 +4,33 @@
 
 class Application {
 public:
-	static Application* _currentApp;
+
 	Application(void);
 	~Application(void);
-	virtual void start();
+
+	void start();
+	bool isRunning();
+
 	virtual void startup();
 	virtual void end();
 	virtual void render(double time);
+
+	virtual void Application::onError(int error, const char * desc);
+	virtual void onKeyDown(int keycode, int mods);
+	virtual void onKeyUp(int keycode, int mods);
+	virtual void onKeyPress(int keycode, int mods);
+	virtual void onMouseDown(int x, int y, int button, int mods);
+	virtual void onMouseUp(int x, int y, int button, int mods);
+	virtual void onMouseClick(int x, int y, int button, int mods);
+	virtual void onMouseScroll(double x, double y);
+	virtual void onMouseMove(double x, double y);
+
+	static Application* _currentApp;
 	static void onErrorCallback(int error, const char * desc);
 	static void onKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods);
 	static void onMouseCallback(GLFWwindow * window, int button, int action, int mods);
-	static void Application::onMouseScrollCallback(GLFWwindow * window, double x, double y);
-	bool isRunning();
+	static void onMouseScrollCallback(GLFWwindow * window, double x, double y);
+	static void onMouseMoveCallback(GLFWwindow * window, double x, double y);
 
 protected:
 	bool loadVertexSharderSource(const std::string shaderName, GLuint &shader);
@@ -27,6 +42,8 @@ protected:
 protected:
 	bool _isRunning;
 	char* _name;
+	int _width;
+	int _height;
 	GLFWwindow* _window;
 	bool _isShowFPS;
 
@@ -36,6 +53,7 @@ private:
 private:
 	double _lastRenderTime;
 	int _fpsCount;
+	bool _isShowConsole;
 
 };
 

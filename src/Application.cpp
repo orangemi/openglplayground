@@ -5,7 +5,10 @@ Application* Application::_currentApp = nullptr;
 Application::Application() {
 	_isRunning = false;
 	_name = "Sample";
+	_width = 640;
+	_height = 480;
 	_isShowFPS = false;
+	_isShowConsole = true;
 }
 
 Application::~Application() {
@@ -15,25 +18,56 @@ bool Application::isRunning() {
 	return _isRunning;
 }
 
+// static callback
 void Application::onErrorCallback(int error, const char * desc) {
-	_currentApp->_isRunning = false;
 	std::cout << "GLFW Error: " << desc << std::endl;
+	_currentApp->onError(error, desc);
+	_currentApp->_isRunning = false;
 }
 
 void Application::onKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods) {
 	std::cout << "input key: " << key << " , scancode: " << scancode << " , action: " << action << " , mods: " << mods << std::endl;
+
+	//miwenjie: should combine to make a Event Object.
+	if (action == GLFW_PRESS) {
+		_currentApp->onKeyDown(key, mods);
+	} else if (action == GLFW_RELEASE) {
+		_currentApp->onKeyUp(key, mods);
+		_currentApp->onKeyPress(key, mods);
+	}
+
+	//special key
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 		_currentApp->_isRunning = false;
+	} else if (key == GLFW_KEY_GRAVE_ACCENT && action == GLFW_PRESS) {
+		if (_currentApp->_isShowConsole) FreeConsole();
+//		else AllocConsole(); // std::cout would not work.
+		_currentApp->_isShowConsole = !_currentApp->_isShowConsole;
 	}
 }
 
+void Application::onMouseMoveCallback(GLFWwindow * window, double x, double y) {
+	std::cout << "mouse x: " << x << " , y: " << y << std::endl;
+	_currentApp->onMouseMove(x, y);
+}
+
+
 void Application::onMouseCallback(GLFWwindow * window, int button, int action, int mods) {
 	std::cout << "mouse button: " << button << " , action: " << action << " , mods: " << mods << std::endl;
+	double x, y;
+	glfwGetCursorPos(window, &x, &y);
+	if (action == GLFW_PRESS) {
+		_currentApp->onMouseDown(x, y, button, mods);
+	} else if (action == GLFW_RELEASE) {
+		_currentApp->onMouseUp(x, y, button, mods);
+		_currentApp->onMouseClick(x, y, button, mods);
+	}
 }
 
 void Application::onMouseScrollCallback(GLFWwindow * window, double x, double y) {
 	std::cout << "mouse wheel x: " << x << " , y: " << y << std::endl;
+	_currentApp->onMouseScroll(x, y);
 }
 
 void Application::startup() {
@@ -48,11 +82,40 @@ void Application::end() {
 
 }
 
+// on Input Event
+void Application::onError(int error, const char * desc) {
+
+}
+void Application::onKeyDown(int keycode, int mods) {
+	
+}
+void Application::onKeyUp(int keycode, int mods) {
+
+}
+void Application::onKeyPress(int keycode, int mods) {
+
+}
+void Application::onMouseDown(int x, int y, int button, int mods) {
+
+}
+void Application::onMouseUp(int x, int y, int button, int mods) {
+
+}
+void Application::onMouseMove(double x, double y) {
+
+}
+void Application::onMouseClick(int x, int y, int button, int mods) {
+
+}
+void Application::onMouseScroll(double x, double y) {
+
+}
+
 void Application::start() {
 	Application::_currentApp = this;
 	glfwSetErrorCallback(onErrorCallback);
 	if (!glfwInit()) return;
-	_window = glfwCreateWindow(640, 480, this->_name, NULL, NULL);
+	_window = glfwCreateWindow(_width, _height, _name, NULL, NULL);
 	if (!_window) {
 		glfwTerminate();
 		return;
@@ -62,6 +125,7 @@ void Application::start() {
 	glfwSetKeyCallback(_window, onKeyCallback);
 	glfwSetMouseButtonCallback(_window, onMouseCallback);
 	glfwSetScrollCallback(_window, onMouseScrollCallback);
+	glfwSetCursorPosCallback(_window, onMouseMoveCallback);
 
 	//init fps;
 	_lastRenderTime = 0.0;
