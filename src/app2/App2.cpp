@@ -94,26 +94,28 @@ void AppDelegate::startup() {
 		0.66f, 1.0f - 0.33f
 	};
 
+	glEnableVertexAttribArray(0);
 	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &uvBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_frag_buffer_data), g_frag_buffer_data, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
 	int width, height;
 	bool hasAlpha;
 	GLubyte * bytes;
 	loadPngImg("res/img/texture.png", width, height, hasAlpha, &bytes);
 	loadImgTexture(width, height, hasAlpha, bytes, textureBuffer);
+	glBindTexture(GL_TEXTURE_2D, textureBuffer);
+	GLuint uniformTexture = glGetUniformLocation(program, "textureSampler");
+	glUniform1i(uniformTexture, 0);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 }
 
 void AppDelegate::render(double time) {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(program);
 
 	glm::mat4 projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -123,23 +125,10 @@ void AppDelegate::render(double time) {
 	glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
 	GLuint uniformMartix = glGetUniformLocation(program, "mvpMatrix");
-	GLuint uniformTexture = glGetUniformLocation(program, "textureSampler");
 	glUniformMatrix4fv(uniformMartix, 1, GL_FALSE, &mvpMatrix[0][0]);
-	glBindTexture(GL_TEXTURE_2D, textureBuffer);
-	glUniform1i(uniformTexture, 0);
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
-	
 	glDrawArrays(GL_TRIANGLES, 0, 3 * 12);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
 }
 
 void AppDelegate::end() {

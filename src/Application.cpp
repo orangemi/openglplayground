@@ -48,7 +48,7 @@ void Application::onKeyCallback(GLFWwindow * window, int key, int scancode, int 
 }
 
 void Application::onMouseMoveCallback(GLFWwindow * window, double x, double y) {
-	std::cout << "mouse x: " << x << " , y: " << y << std::endl;
+//	std::cout << "mouse x: " << x << " , y: " << y << std::endl;
 	_currentApp->onMouseMove(x, y);
 }
 
@@ -350,7 +350,9 @@ bool Application::loadImgTexture(int width, int height, bool hasAlpha, GLubyte *
 		0,
 		hasAlpha ? GL_RGBA : GL_RGB,
 		GL_UNSIGNED_BYTE,
-		imgData);
+		imgData
+	);
+
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

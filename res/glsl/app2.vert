@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 pos;
 layout(location = 1) in vec2 vertrexUV;
-out vec2 UV;
+varying vec2 UV;
 uniform mat4 mvpMatrix;
 
 void main() {

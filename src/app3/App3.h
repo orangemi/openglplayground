@@ -11,8 +11,10 @@ public:
 
 private:
 	GLuint program;
+	GLuint fontTexture;
 	GLuint vertexBuffer;
 	GLuint uvBuffer;
 	GLuint textureBuffer;
+	FT_Face face;
 };
 
